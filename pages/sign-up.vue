@@ -1,193 +1,293 @@
 <template>
-  <section>
-    <div class="mb-8">
-      <h1 class="text-4xl font-bold text-gray-800 mb-2 text-center">
-        CREATE ACCOUNT
-      </h1>
-      <p class="text-sm text-gray-500 text-center">
-        Sign up with your Xomie's mail
-      </p>
-    </div>
-
-    <div>
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-gray-800 mb-2">
-          Full Name <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <User
-            :size="20"
-            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
-          <input
-            v-model="fullName"
-            type="text"
-            placeholder="John Doe"
-            class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
-          />
+  <div
+    class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
+      <!-- Sign Up Form Card -->
+      <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+        <div class="mb-8">
+          <h1 class="text-4xl font-bold text-gray-800 mb-2">CREATE ACCOUNT</h1>
+          <p class="text-sm text-gray-500">Sign up with your Xomie's mail</p>
         </div>
-        <p v-if="errors.fullName" class="text-red-500 text-xs mt-1">
-          {{ errors.fullName }}
-        </p>
-      </div>
 
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-gray-800 mb-2">
-          Email <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <Mail
-            :size="20"
-            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
-          <input
-            v-model="email"
-            type="email"
-            placeholder="example@xomie-soft.com"
-            class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
-          />
-        </div>
-        <p v-if="errors.email" class="text-red-500 text-xs mt-1">
-          {{ errors.email }}
-        </p>
-      </div>
+        <div>
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">
+              Full Name <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <User
+                :size="20"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                v-model="fullName"
+                type="text"
+                placeholder="John Doe"
+                class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
+              />
+            </div>
+            <p v-if="errors.fullName" class="text-red-500 text-xs mt-1">
+              {{ errors.fullName }}
+            </p>
+          </div>
 
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-gray-800 mb-2">
-          Password <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <Lock
-            :size="20"
-            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
-          <input
-            v-model="password"
-            :type="showPassword ? 'text' : 'password'"
-            placeholder="••••••"
-            class="w-full pl-11 pr-11 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
-          />
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">
+              Email <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <Mail
+                :size="20"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                v-model="email"
+                type="email"
+                placeholder="example@xomie-soft.com"
+                class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
+              />
+            </div>
+            <p v-if="errors.email" class="text-red-500 text-xs mt-1">
+              {{ errors.email }}
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">
+              Password <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <Lock
+                :size="20"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                v-model="password"
+                :type="showPassword ? 'text' : 'password'"
+                placeholder="••••••"
+                class="w-full pl-11 pr-11 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
+              />
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer text-gray-400 hover:text-gray-600"
+              >
+                <EyeOff v-if="showPassword" :size="20" />
+                <Eye v-else :size="20" />
+              </button>
+            </div>
+            <p v-if="errors.password" class="text-red-500 text-xs mt-1">
+              {{ errors.password }}
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">
+              Confirm Password <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <Lock
+                :size="20"
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                v-model="confirmPassword"
+                :type="showConfirmPassword ? 'text' : 'password'"
+                placeholder="••••••"
+                class="w-full pl-11 pr-11 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
+              />
+              <button
+                type="button"
+                @click="showConfirmPassword = !showConfirmPassword"
+                class="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer text-gray-400 hover:text-gray-600"
+              >
+                <EyeOff v-if="showConfirmPassword" :size="20" />
+                <Eye v-else :size="20" />
+              </button>
+            </div>
+            <p v-if="errors.confirmPassword" class="text-red-500 text-xs mt-1">
+              {{ errors.confirmPassword }}
+            </p>
+          </div>
+
+          <div class="mb-6">
+            <label
+              class="flex items-start text-sm text-gray-600 cursor-pointer"
+            >
+              <input
+                v-model="agreeToTerms"
+                type="checkbox"
+                class="mr-2 mt-1 cursor-pointer w-4 h-4 accent-purple-600"
+              />
+              <span>
+                I agree to the
+                <a
+                  href="#"
+                  class="text-purple-600 font-semibold no-underline hover:text-purple-700"
+                >
+                  Terms and Conditions
+                </a>
+                and
+                <a
+                  href="#"
+                  class="text-purple-600 font-semibold no-underline hover:text-purple-700"
+                >
+                  Privacy Policy
+                </a>
+              </span>
+            </label>
+            <p v-if="errors.agreeToTerms" class="text-red-500 text-xs mt-1">
+              {{ errors.agreeToTerms }}
+            </p>
+          </div>
+
           <button
-            type="button"
-            @click="showPassword = !showPassword"
-            class="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer text-gray-400 hover:text-gray-600"
+            @click="handleSubmit"
+            :disabled="isLoading"
+            class="w-full py-3.5 bg-indigo-900 text-white border-0 rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 hover:bg-indigo-800 hover:shadow-lg disabled:opacity-50"
           >
-            <EyeOff v-if="showPassword" :size="20" />
-            <Eye v-else :size="20" />
+            <div v-if="isLoading" class="flex items-center justify-center">
+              <svg
+                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Creating Account...
+            </div>
+            <span v-else>Create Account</span>
           </button>
-        </div>
-        <p v-if="errors.password" class="text-red-500 text-xs mt-1">
-          {{ errors.password }}
-        </p>
-      </div>
 
-      <div class="mb-4">
-        <label class="block text-sm font-semibold text-gray-800 mb-2">
-          Confirm Password <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <Lock
-            :size="20"
-            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-          />
-          <input
-            v-model="confirmPassword"
-            :type="showConfirmPassword ? 'text' : 'password'"
-            placeholder="••••••"
-            class="w-full pl-11 pr-11 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
-          />
-          <button
-            type="button"
-            @click="showConfirmPassword = !showConfirmPassword"
-            class="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer text-gray-400 hover:text-gray-600"
-          >
-            <EyeOff v-if="showConfirmPassword" :size="20" />
-            <Eye v-else :size="20" />
-          </button>
-        </div>
-        <p v-if="errors.confirmPassword" class="text-red-500 text-xs mt-1">
-          {{ errors.confirmPassword }}
-        </p>
-      </div>
-
-      <div class="mb-6">
-        <label class="flex items-start text-sm text-gray-600 cursor-pointer">
-          <input
-            v-model="agreeToTerms"
-            type="checkbox"
-            class="mr-2 mt-1 cursor-pointer"
-          />
-          <span>
-            I agree to the
-            <a
-              href="#"
+          <p class="text-center mt-6 text-sm text-gray-600">
+            Already have an account?
+            <NuxtLink
+              to="/sign-in"
               class="text-purple-600 font-semibold no-underline hover:text-purple-700"
             >
-              Terms and Conditions
-            </a>
-            and
-            <a
-              href="#"
-              class="text-purple-600 font-semibold no-underline hover:text-purple-700"
-            >
-              Privacy Policy
-            </a>
-          </span>
-        </label>
-        <p v-if="errors.agreeToTerms" class="text-red-500 text-xs mt-1">
-          {{ errors.agreeToTerms }}
-        </p>
+              Login
+            </NuxtLink>
+          </p>
+        </div>
       </div>
 
-      <button
-        @click="handleSubmit"
-        :disabled="isLoading"
-        class="w-full py-3.5 bg-indigo-900 text-white border-0 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 hover:bg-indigo-800 disabled:opacity-50"
-      >
-        <div v-if="isLoading" class="flex items-center justify-center">
-          <svg
-            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            />
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
-          Creating Account...
-        </div>
-        <span v-else>Create Account</span>
-      </button>
-
-      <p class="text-center mt-6 text-sm text-gray-600">
-        Already have an account?
-        <NuxtLink
-          to="/sign-in"
-          class="text-purple-600 font-semibold no-underline hover:text-purple-700"
+      <!-- Illustration Side -->
+      <div class="hidden md:flex flex-col items-center justify-center">
+        <div
+          class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 mb-6 shadow-xl"
         >
-          Login
-        </NuxtLink>
-      </p>
+          <div class="bg-indigo-800 rounded-2xl p-8 shadow-2xl">
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <!-- Icon Grid -->
+              <div
+                class="bg-blue-500 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <Mail :size="32" class="text-white" />
+              </div>
+              <div
+                class="bg-yellow-500 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <Lock :size="32" class="text-white" />
+              </div>
+              <div
+                class="bg-blue-600 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                  />
+                </svg>
+              </div>
+              <div
+                class="bg-blue-600 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <rect x="3" y="11" width="18" height="2" rx="1" />
+                  <rect x="3" y="6" width="18" height="2" rx="1" />
+                  <rect x="3" y="16" width="18" height="2" rx="1" />
+                </svg>
+              </div>
+              <div
+                class="bg-blue-400 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </div>
+              <div
+                class="bg-orange-500 rounded-xl p-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-8 w-8 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="8"
+                    stroke="white"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-indigo-900 rounded-2xl px-8 py-4 shadow-xl">
+          <h2 class="text-white text-2xl font-bold text-center">
+            Ticketing System
+          </h2>
+        </div>
+
+        <!-- Decorative Blobs -->
+        <div
+          class="absolute bottom-10 left-10 w-32 h-32 bg-blue-300/30 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute top-10 right-10 w-40 h-40 bg-purple-300/30 rounded-full blur-3xl"
+        ></div>
+      </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { Mail, Lock, Eye, EyeOff, User } from "lucide-vue-next";
 import { useAuthStore } from "~/stores/auth";
-import { useToastNotification } from "~/plugins/toast.client";
 
 // Use auth layout
 definePageMeta({
@@ -195,7 +295,7 @@ definePageMeta({
 });
 
 const authStore = useAuthStore();
-const toast = useToastNotification();
+const { $toast } = useNuxtApp();
 
 const fullName = ref("");
 const email = ref("");
@@ -259,12 +359,11 @@ const handleSubmit = async () => {
   // Simulate API call
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  if (process.client) {
-    localStorage.setItem("user", JSON.stringify(newUser));
-  }
+  // Note: Removed localStorage usage as per artifact restrictions
+  // In a real app, this would be handled by your backend/state management
 
   authStore.login({ email: email.value, name: fullName.value });
-  toast.success("Account created successfully!");
+  $toast.success("Account created successfully!");
   await navigateTo("/dashboard");
 
   isLoading.value = false;

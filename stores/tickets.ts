@@ -15,6 +15,33 @@ export const useTicketsStore = defineStore("tickets", () => {
   );
   const recentTickets = computed(() => tickets.value.slice(0, 4));
 
+  const topEmployees = computed(() => {
+    const employeeCounts: { [key: string]: number } = {};
+    tickets.value.forEach((ticket) => {
+      if (ticket.employee) {
+        employeeCounts[ticket.employee] =
+          (employeeCounts[ticket.employee] || 0) + 1;
+      }
+    });
+    return Object.entries(employeeCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  });
+
+  const topClients = computed(() => {
+    const clientCounts: { [key: string]: number } = {};
+    tickets.value.forEach((ticket) => {
+      if (ticket.company) {
+        clientCounts[ticket.company] = (clientCounts[ticket.company] || 0) + 1;
+      }
+    });
+    return Object.entries(clientCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  });
+
   const loadTickets = () => {
     if (process.client) {
       const savedTickets = localStorage.getItem("ticketapp_tickets");
@@ -109,6 +136,8 @@ export const useTicketsStore = defineStore("tickets", () => {
     inProgressTickets,
     closedTickets,
     recentTickets,
+    topEmployees,
+    topClients,
     loadTickets,
     addTicket,
     updateTicket,

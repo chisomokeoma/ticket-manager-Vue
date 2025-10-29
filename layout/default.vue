@@ -2,25 +2,9 @@
   <div
     class="min-h-screen bg-linear-to-br from-purple-50 via-white to-blue-50 flex h-full"
   >
-    <style>
-      @keyframes slide-in {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      .animate-slide-in {
-        animation: slide-in 0.3s ease-out;
-      }
-    </style>
-
     <aside
       :class="[
-        sidebarOpen ? 'w-72' : 'w-0',
+        sidebarOpen ? 'w-64 sm:w-72' : 'w-0',
         'bg-white shadow-xl transition-all duration-300 fixed left-0 top-0 h-full overflow-hidden z-40',
       ]"
     >
@@ -60,7 +44,7 @@
 
     <main
       :class="[
-        sidebarOpen ? 'ml-72' : 'ml-0',
+        sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0',
         'flex-1 transition-all duration-300',
       ]"
     >
@@ -75,7 +59,7 @@
           <Menu v-else :size="24" />
         </button>
 
-        <div class="flex-1 max-w-md mx-6">
+        <div class="flex-1 max-w-md mx-2 sm:mx-6">
           <div class="relative">
             <input
               v-model="searchTerm"
@@ -99,16 +83,21 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 sm:gap-3">
           <div
-            class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white font-semibold"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-200 flex items-center justify-center"
           >
-            XM
+            <User :size="16" class="text-gray-500 sm:hidden" />
+            <User :size="20" class="text-gray-500 hidden sm:block" />
           </div>
+          <span
+            class="font-semibold text-gray-800 text-sm sm:text-base hidden sm:block"
+            >Admin</span
+          >
         </div>
       </header>
 
-      <div class="p-6 flex items-center">
+      <div class="p-4 sm:p-6 flex items-center">
         <slot />
       </div>
     </main>
@@ -127,15 +116,11 @@
 import { ref } from "vue";
 import { BarChart3, Ticket, Menu, X } from "lucide-vue-next";
 import { useAuthStore } from "~/stores/auth";
-import { useToastNotification } from "~/plugins/toast.client";
-
 const authStore = useAuthStore();
-const toast = useToastNotification();
+const { $toast } = useNuxtApp();
 
 const sidebarOpen = ref(true);
 const searchTerm = ref("");
-const showToast = ref(false);
-const toastMessage = ref("");
 
 const navLinks = [
   {
@@ -152,13 +137,8 @@ const navLinks = [
 
 const handleLogout = async () => {
   authStore.logout();
-
-  toastMessage.value = "Logged out successfully";
-  showToast.value = true;
-
-  setTimeout(() => {
-    navigateTo("/sign-in");
-  }, 1500);
+  $toast.success("Logged out successfully");
+  await navigateTo("/sign-in");
 };
 
 // Check authentication on mount
@@ -169,3 +149,20 @@ onMounted(() => {
   }
 });
 </script>
+
+<style scoped>
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+</style>

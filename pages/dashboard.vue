@@ -1,30 +1,16 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6"
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4 sm:p-6"
   >
-    <style>
-      @keyframes slide-in {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      .animate-slide-in {
-        animation: slide-in 0.3s ease-out;
-      }
-    </style>
-
     <div class="max-w-7xl mx-auto">
-      <div class="mb-8 flex items-center justify-between">
+      <div
+        class="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      >
         <div>
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
             Welcome back{{ user ? `, ${user.email.split("@")[0]}` : "" }}! 👋
           </h1>
-          <p class="text-gray-600">
+          <p class="text-gray-600 text-sm sm:text-base">
             Here's what's happening with your tickets today
           </p>
         </div>
@@ -343,11 +329,9 @@ import {
 } from "lucide-vue-next";
 import { useAuthStore } from "~/stores/auth";
 import { useTicketsStore } from "~/stores/tickets";
-import { useToastNotification } from "~/plugins/toast.client";
-
 const authStore = useAuthStore();
 const ticketsStore = useTicketsStore();
-const toast = useToastNotification();
+const { $toast } = useNuxtApp();
 
 const user = computed(() => authStore.user);
 
@@ -359,7 +343,7 @@ const getStatusBorderColor = (status: string): string => {
 
 const refreshTickets = () => {
   ticketsStore.loadTickets();
-  toast.success("Tickets refreshed!");
+  $toast.success("Tickets refreshed!");
 };
 
 onMounted(() => {

@@ -1,34 +1,7 @@
 <template>
   <div
-    class="min-h-screen bg-linear-to-br from-purple-50 via-white to-blue-50 p-6"
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4 sm:p-6"
   >
-    <style>
-      @keyframes slide-in {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      .animate-slide-in {
-        animation: slide-in 0.3s ease-out;
-      }
-      @keyframes fade-in {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      .animate-fade-in {
-        animation: fade-in 0.2s ease-out;
-      }
-    </style>
-
     <!-- Toast Notification -->
     <div
       v-if="showToast"
@@ -43,17 +16,21 @@
     <!-- Content Area -->
     <div class="max-w-7xl mx-auto">
       <!-- Header with Create Button -->
-      <div class="flex items-center justify-between mb-6">
+      <div
+        class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4"
+      >
         <div class="flex items-center gap-3">
-          <Ticket class="text-purple-600" :size="28" />
-          <h1 class="text-2xl font-bold text-gray-800">Tickets</h1>
+          <Ticket class="text-purple-600" :size="24" />
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Tickets</h1>
         </div>
         <button
           @click="handleCreate"
-          class="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-md"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors shadow-md text-sm sm:text-base"
         >
-          <Plus :size="20" />
-          Create A Task
+          <Plus :size="16" class="sm:hidden" />
+          <Plus :size="20" class="hidden sm:block" />
+          <span class="hidden sm:inline">Create A Task</span>
+          <span class="sm:hidden">Create Task</span>
         </button>
       </div>
 
@@ -384,10 +361,8 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { Ticket, Plus, Edit2, Trash2, X, Calendar } from "lucide-vue-next";
 import { useTicketsStore, type TicketData } from "~/stores/tickets";
-import { useToastNotification } from "~/plugins/toast.client";
-
 const ticketsStore = useTicketsStore();
-const toast = useToastNotification();
+const { $toast } = useNuxtApp();
 
 const showModal = ref(false);
 const modalMode = ref<"create" | "edit">("create");
@@ -430,12 +405,11 @@ const showToastMessage = (
   message: string,
   type: "success" | "error" = "success"
 ) => {
-  toastMessage.value = message;
-  toastType.value = type;
-  showToast.value = true;
-  setTimeout(() => {
-    showToast.value = false;
-  }, 3000);
+  if (type === "success") {
+    $toast.success(message);
+  } else {
+    $toast.error(message);
+  }
 };
 
 const validateForm = (): boolean => {

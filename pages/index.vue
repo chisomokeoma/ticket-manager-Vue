@@ -1,38 +1,5 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <style>
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-      }
-      @keyframes pulse-slow {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.1;
-        }
-        50% {
-          transform: scale(1.05);
-          opacity: 0.15;
-        }
-      }
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      .animate-float-delayed {
-        animation: float 8s ease-in-out infinite;
-        animation-delay: 1s;
-      }
-      .animate-pulse-slow {
-        animation: pulse-slow 4s ease-in-out infinite;
-      }
-    </style>
-
     <section
       class="relative pt-20 pb-32 overflow-hidden"
       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
@@ -53,34 +20,36 @@
         "
       />
 
-      <div class="max-w-7xl mx-auto px-5 relative z-10">
-        <div class="text-center text-white max-w-3xl mx-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center text-white max-w-4xl mx-auto">
           <h1
-            class="text-5xl md:text-6xl font-extrabold mb-5"
+            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 sm:mb-6"
             style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2)"
           >
             Xomie's Ticket Manager
           </h1>
 
           <p
-            class="text-lg md:text-2xl mb-10 leading-relaxed"
+            class="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 leading-relaxed px-4"
             style="opacity: 0.95"
           >
             Streamline your workflow with our powerful ticket management
             solution. Track, manage, and resolve issues faster than ever before.
           </p>
 
-          <div class="flex gap-4 justify-center flex-wrap">
-            <NuxtLink to="/sign-up">
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
+          >
+            <NuxtLink to="/sign-up" class="w-full sm:w-auto">
               <button
-                class="px-10 py-4 bg-white text-purple-600 border-0 rounded-xl text-lg font-semibold cursor-pointer shadow-lg transition-all duration-300 flex items-center gap-2 hover:-translate-y-0.5 hover:shadow-xl"
+                class="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 bg-white text-purple-600 border-0 rounded-xl text-base sm:text-lg font-semibold cursor-pointer shadow-lg transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-xl"
               >
                 Get Started <ArrowRight :size="20" />
               </button>
             </NuxtLink>
-            <NuxtLink to="/sign-in">
+            <NuxtLink to="/sign-in" class="w-full sm:w-auto">
               <button
-                class="px-10 py-4 bg-transparent text-white border-2 border-white rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
+                class="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 bg-transparent text-white border-2 border-white rounded-xl text-base sm:text-lg font-semibold cursor-pointer transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
               >
                 Login
               </button>
@@ -102,26 +71,30 @@
       </svg>
     </section>
 
-    <section class="max-w-7xl mx-auto px-5 py-20 relative">
+    <section
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 relative"
+    >
       <div
-        class="absolute w-36 h-36 rounded-full top-12 right-[5%] z-0 animate-pulse-slow"
+        class="absolute w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full top-8 sm:top-12 right-[5%] z-0 animate-pulse-slow"
         style="background: linear-gradient(135deg, #fcd34d, #f59e0b)"
       />
 
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+        >
           Why Choose Our Platform?
         </h2>
-        <p class="text-xl text-gray-500 max-w-2xl mx-auto">
+        <p class="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto px-4">
           Everything you need to manage tickets efficiently and effectively
         </p>
       </div>
 
       <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative z-10"
       >
         <div
-          class="bg-white p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
+          class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
         >
           <div
             class="w-16 h-16 rounded-xl flex items-center justify-center mb-5"
@@ -139,7 +112,7 @@
         </div>
 
         <div
-          class="bg-white p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
+          class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
         >
           <div
             class="w-16 h-16 rounded-xl flex items-center justify-center mb-5"
@@ -157,7 +130,7 @@
         </div>
 
         <div
-          class="bg-white p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
+          class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
         >
           <div
             class="w-16 h-16 rounded-xl flex items-center justify-center mb-5"
@@ -175,7 +148,7 @@
         </div>
 
         <div
-          class="bg-white p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
+          class="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-2 hover:shadow-2xl"
         >
           <div
             class="w-16 h-16 rounded-xl flex items-center justify-center mb-5"
