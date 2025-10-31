@@ -7,7 +7,7 @@
       <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
         <div class="mb-8">
           <h1 class="text-4xl font-bold text-gray-800 mb-2">WELCOME BACK</h1>
-          <p class="text-sm text-gray-500">Login With Xomie's mail</p>
+          <p class="text-sm text-gray-500">Login to your account</p>
         </div>
 
         <div>
@@ -23,7 +23,7 @@
               <input
                 v-model="email"
                 type="email"
-                placeholder="example@xomie-soft.com"
+                placeholder="example@mail.com"
                 class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
               />
             </div>
@@ -232,6 +232,24 @@ definePageMeta({
   layout: "auth",
 });
 
+// Types
+interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  password: string;
+  createdAt: string;
+}
+
+interface SessionToken {
+  userId: number;
+  email: string;
+  fullName: string;
+  token: string;
+  createdAt: string;
+  rememberMe: boolean;
+}
+
 const authStore = useAuthStore();
 const { $toast } = useNuxtApp();
 
@@ -246,7 +264,7 @@ const errors = reactive<{
   password?: string;
 }>({});
 
-const validate = () => {
+const validate = (): boolean => {
   const newErrors: typeof errors = {};
 
   if (!email.value) {
@@ -270,27 +288,58 @@ const handleSubmit = async () => {
 
   isLoading.value = true;
 
-  const mockDetails = {
-    email: "test@mail.com",
-    password: "Internal123",
-    token: "fake-login-data",
-  };
+  try {
+    // Get all registered users
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Find user with matching credentials
+    const user = users.find(
+      (u: User) =>
+        u.email === email.value.toLowerCase().trim() &&
+        u.password === password.value
+    );
 
-  if (
-    email.value === mockDetails.email &&
-    password.value === mockDetails.password
-  ) {
-    authStore.login({ email: email.value });
-    $toast.success("Successfully logged In");
-    await navigateTo("/dashboard");
-  } else {
-    $toast.error("Wrong login details");
+    if (user) {
+      // Create session token (as per project requirements)
+      const sessionToken: SessionToken = {
+        userId: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        token: `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        createdAt: new Date().toISOString(),
+        rememberMe: rememberMe.value,
+      };
+
+      // Store session using the required key name
+      localStorage.setItem("ticketapp_session", JSON.stringify(sessionToken));
+
+      // Update auth store
+      authStore.login({ email: user.email, name: user.fullName });
+
+      $toast.success("Successfully logged in!");
+
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      await navigateTo("/dashboard");
+    } else {
+      // Check if user exists but password is wrong
+      const userExists = users.some(
+        (u: User) => u.email === email.value.toLowerCase().trim()
+      );
+
+      if (userExists) {
+        $toast.error("Incorrect password. Please try again.");
+      } else {
+        $toast.error("No account found with this email. Please sign up first.");
+      }
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    $toast.error("An error occurred during login. Please try again.");
+  } finally {
+    isLoading.value = false;
   }
-
-  isLoading.value = false;
 };
 
 // Set page title

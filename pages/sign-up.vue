@@ -7,7 +7,7 @@
       <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
         <div class="mb-8">
           <h1 class="text-4xl font-bold text-gray-800 mb-2">CREATE ACCOUNT</h1>
-          <p class="text-sm text-gray-500">Sign up with your Xomie's mail</p>
+          <p class="text-sm text-gray-500">Sign up to get started</p>
         </div>
 
         <div>
@@ -44,7 +44,7 @@
               <input
                 v-model="email"
                 type="email"
-                placeholder="example@xomie-soft.com"
+                placeholder="example@mail.com"
                 class="w-full pl-11 pr-4 py-3 border-2 border-gray-200 rounded-lg text-sm outline-none transition-colors focus:border-purple-500 text-black"
               />
             </div>
@@ -294,6 +294,23 @@ definePageMeta({
   layout: "auth",
 });
 
+// Types
+interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  password: string;
+  createdAt: string;
+}
+
+interface SessionToken {
+  userId: number;
+  email: string;
+  fullName: string;
+  token: string;
+  createdAt: string;
+}
+
 const authStore = useAuthStore();
 const { $toast } = useNuxtApp();
 
@@ -314,15 +331,26 @@ const errors = reactive<{
   agreeToTerms?: string;
 }>({});
 
-const validate = () => {
+const validate = (): boolean => {
   const newErrors: typeof errors = {};
 
-  if (!fullName.value.trim()) newErrors.fullName = "Full name is required";
+  if (!fullName.value.trim()) {
+    newErrors.fullName = "Full name is required";
+  }
 
   if (!email.value) {
     newErrors.email = "Email is required";
   } else if (!/\S+@\S+\.\S+/.test(email.value)) {
     newErrors.email = "Invalid email address";
+  } else {
+    // Check if email already exists
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+    const emailExists = users.some(
+      (user: User) => user.email === email.value.toLowerCase().trim()
+    );
+    if (emailExists) {
+      newErrors.email = "This email is already registered";
+    }
   }
 
   if (!password.value) {
@@ -348,25 +376,52 @@ const handleSubmit = async () => {
 
   isLoading.value = true;
 
-  const newUser = {
-    fullName: fullName.value,
-    email: email.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    agreeToTerms: agreeToTerms.value,
-  };
+  try {
+    // Get existing users or initialize empty array
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Create new user object
+    const newUser: User = {
+      id: Date.now(),
+      fullName: fullName.value.trim(),
+      email: email.value.toLowerCase().trim(),
+      password: password.value, // In production, this should be hashed!
+      createdAt: new Date().toISOString(),
+    };
 
-  // Note: Removed localStorage usage as per artifact restrictions
-  // In a real app, this would be handled by your backend/state management
+    // Add new user to array
+    users.push(newUser);
 
-  authStore.login({ email: email.value, name: fullName.value });
-  $toast.success("Account created successfully!");
-  await navigateTo("/dashboard");
+    // Save updated users array
+    localStorage.setItem("users", JSON.stringify(users));
 
-  isLoading.value = false;
+    // Create session token (as per project requirements)
+    const sessionToken: SessionToken = {
+      userId: newUser.id,
+      email: newUser.email,
+      fullName: newUser.fullName,
+      token: `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Store session using the required key name
+    localStorage.setItem("ticketapp_session", JSON.stringify(sessionToken));
+
+    // Update auth store
+    authStore.login({ email: newUser.email, name: newUser.fullName });
+
+    $toast.success("Account created successfully!");
+
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await navigateTo("/dashboard");
+  } catch (error) {
+    console.error("Error creating account:", error);
+    $toast.error("Failed to create account. Please try again.");
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 // Set page title
